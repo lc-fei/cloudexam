@@ -1,0 +1,50 @@
+@import '../../constants/variables.scss';
+
+.Layout {
+	height: 100%;
+	.Header {
+		height: $header_height;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+		.HeaderContent {
+			height: $header_height;
+			margin: 0 auto;
+			max-width: 1200px;
+			display: flex;
+			align-items: center;
+			.HeaderTitle {
+				height: 100%;
+				font-size: 32px;
+				font-weight: bold;
+				color: $base_color;
+				margin-right: 20px;
+			}
+			.HeaderMenu {
+				& > li:hover {
+					color: $base_color;
+					background-color: lighten($base_color, 30%);
+				}
+			}
+			.userInfoContainer {
+				margin-left: auto;
+				cursor: pointer;
+			}
+		}
+	}
+	.Content {
+		background-color: $none_bg_color;
+		width: 1200px;
+		height: 100%;
+		margin: 0 auto;
+		.bread {
+			font-size: 20px;
+			margin-bottom: 20px;
+		}
+		.ContentContainer {
+			padding: 20px;
+			background-color: #ffffff;
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+	}
+}

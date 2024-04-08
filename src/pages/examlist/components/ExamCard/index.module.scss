@@ -1,0 +1,28 @@
+@import '../../../../constants/variables.scss';
+.examCardTitle {
+	display: flex;
+	align-items: center;
+
+	&__title {
+		cursor: pointer;
+		&:hover {
+			color: $base_color;
+			text-decoration: underline;
+		}
+	}
+}
+
+.RankingButton {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 10px;
+	&__icon_container {
+		color: lighten($base_color, 10%);
+		display: flex;
+	}
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+}

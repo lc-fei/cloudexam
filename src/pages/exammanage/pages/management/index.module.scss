@@ -1,0 +1,31 @@
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.content {
+	.upload-sheetlist {
+		&-container {
+			width: 100px;
+			height: 100px;
+			border: 1px solid #ccc;
+			position: relative;
+
+			&::before {
+				content: '+';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-size: 50px;
+			}
+			.upload-sheetlist-input {
+				// display: none;
+				width: 100px;
+				height: 100px;
+				z-index: 1;
+			}
+		}
+	}
+}

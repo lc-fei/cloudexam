@@ -1,0 +1,18 @@
+.Login {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1677FF;
+  .box {
+    h1 {
+      margin-bottom: 15px;
+    }
+    height: 300px;
+    width: 600px;
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 20px;
+  }
+}

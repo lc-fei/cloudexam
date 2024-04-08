@@ -1,0 +1,11 @@
+.exam-list-header {
+	display: flex;
+	// flex-wrap: wrap;
+	// justify-content: space-between;
+  gap: 20px;
+	align-items: center;
+  margin-bottom: 20px;
+	.search {
+		width: 300px;
+	}
+}
