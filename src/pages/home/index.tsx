@@ -1,4 +1,4 @@
-import { Breadcrumb, Dropdown, Layout, Menu } from 'antd'
+import { Breadcrumb, Dropdown, Layout, Menu, Spin } from 'antd'
 import { useEffect } from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { AdmMenu, DropDownMenu } from '../../constants'
@@ -7,6 +7,7 @@ import { UserInfo } from './components/UserInfo'
 import styles from './index.module.scss'
 import { MenuItemType } from 'antd/es/menu/hooks/useItems'
 import { msgError } from '@/utils/msg'
+import { useSpinningStore } from '@/store/useSpinningStore'
 
 const { Header, Content, Footer } = Layout
 
@@ -15,6 +16,7 @@ export const HomePage = () => {
   const BreadcrumbItems = useBreadRouterStore((state) => state.routers)
   const pushrouter = useBreadRouterStore((state) => state.pushrouter)
   const clearrouters = useBreadRouterStore((state) => state.clearrouters)
+  const { spinningStore } = useSpinningStore()
   const menuClick = (e: MenuItemType) => {
     const { key } = e
     if (key === 'changepwd') {
@@ -104,7 +106,28 @@ export const HomePage = () => {
             ></Breadcrumb>
           </div>
           <div className={styles['ContentContainer']}>
-            <Outlet />
+            <div style={{ position: 'relative' }}>
+              {spinningStore && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(255, 255, 255, 0.6)', // 设置蒙层的颜色和透明度
+                    zIndex: 1, // 确保蒙层在Outlet之上
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Spin spinning={spinningStore} /> {/* 将Spin放在蒙层容器中 */}
+                </div>
+              )}
+
+              <Outlet />
+            </div>
           </div>
         </Content>
         <Footer className={styles['Footer']}></Footer>

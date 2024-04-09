@@ -6,6 +6,8 @@ import { ExamManagementById } from '../pages/exammanage/pages/management'
 import { HomePage } from '../pages/home'
 import { Login } from '../pages/login'
 import { Register } from '../pages/register'
+import path from 'path'
+import { ClassListInfo } from '@/pages/classlist/pages/classlistinfo'
 
 export const routes = [
   {
@@ -31,6 +33,10 @@ export const routes = [
       {
         path: '/classlist',
         element: <ClassList />,
+      },
+      {
+        path: '/classlist/detail/:id',
+        element: <ClassListInfo />,
       },
       {
         path: '/examlist',

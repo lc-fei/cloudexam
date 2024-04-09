@@ -4,17 +4,20 @@ import { useEffect, useState } from 'react'
 import { apiAll, apiInfo, apiNew } from '@/api/class/api'
 import { ResRoot, TeacherStudentData, allRes, infoRes } from '@/api/class/type'
 import { msgError } from '@/utils/msg'
+import { useNavigate } from 'react-router-dom'
+import { useSpinningStore } from '@/store/useSpinningStore'
+import Meta from 'antd/es/card/Meta'
 
-const { Meta } = Card
 export const ClassList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [form] = Form.useForm()
   const [classIdList, setClassIdList] = useState<allRes>([])
   const [classInfoList, setClassInfoList] = useState<TeacherStudentData[]>()
+  const navagate = useNavigate()
+  const { setSpinningStore } = useSpinningStore()
   const showModal = () => {
     setIsModalOpen(true)
   }
-
   const handleOk = () => {
     setIsModalOpen(false)
   }
@@ -28,7 +31,7 @@ export const ClassList = () => {
       try {
         const user = JSON.parse(localStorage.getItem('user') as string)
         console.log('user', user)
-        const req = { name: values.name, teacherId: parseInt(user.state.userinfo.uid) }
+        const req = { name: values.name, teacherID: parseInt(user.state.userinfo.uid) }
         const res = await apiNew(req)
         console.log('res', res)
         getNewClassInfo()
@@ -44,6 +47,7 @@ export const ClassList = () => {
   }
 
   const getNewClassInfo = async () => {
+    setSpinningStore(true)
     const classIdRes = (await apiAll()) as ResRoot<allRes>
     const classIdList = classIdRes.data
     const classInfoRes = (await apiInfo(classIdList)) as ResRoot<infoRes>
@@ -52,6 +56,7 @@ export const ClassList = () => {
     setClassInfoList(Object.values(classInfoObj))
     console.log('classInfoList', classInfoList)
     console.log('更新最新的班级数据')
+    setSpinningStore(false)
   }
 
   useEffect(() => {
@@ -69,9 +74,17 @@ export const ClassList = () => {
         <div className={styles['content']}>
           {classInfoList?.map((item) => {
             return (
-              <Card hoverable className={styles['mycard']}>
-                <Meta title={item.Name} description={'班级号：' + item.ID} />
-              </Card>
+              <div key={item.ID}>
+                <Card
+                  hoverable
+                  className={styles['mycard']}
+                  onClick={() => {
+                    navagate('/classlist/detail/' + item.ID)
+                  }}
+                >
+                  <Meta title={item.Name} description={'班级号：' + item.Code} />
+                </Card>
+              </div>
             )
           })}
         </div>

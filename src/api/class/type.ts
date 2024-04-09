@@ -23,5 +23,6 @@ export type TeacherStudentData = {
   Name: string;
   TeacherIDs: number[] | null;
   StudentIDs: number[] | null;
-};  
+  Code: string
+};
 
