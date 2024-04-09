@@ -16,8 +16,8 @@ export const AdmMenu: MenuProps['items'] = [
     key: '/exammanage',
   },
   {
-    label: '教师管理',
-    key: '/tchmanage',
+    label: '班级管理',
+    key: '/classlist',
   },
   {
     label: '考试列表',
@@ -30,10 +30,10 @@ export const AdmMenu: MenuProps['items'] = [
 ]
 
 export const DropDownMenu: MenuProps['items'] = [
-  {
-    key: 'changepwd',
-    label: <div>修改密码</div>,
-  },
+  // {
+  //   key: 'changepwd',
+  //   label: <div>修改信息</div>,
+  // },
   {
     key: 'logout',
     label: <div>退出登录</div>,

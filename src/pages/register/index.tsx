@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styles from './index.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { Button, Form, Input, Row, Col, Select } from 'antd'
-import { ReqNew } from '@/api/type'
-import { apiCheck, apiNew, apiVerify } from '@/api/user'
+import { ReqNew } from '@/api/user/type'
+import { apiCheck, apiNew, apiVerify } from '@/api/user/api'
 import { msgError } from '@/utils/msg'
 
 const formItemLayout = {

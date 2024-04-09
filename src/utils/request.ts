@@ -80,7 +80,10 @@ const request = <T>(url: string, params: unknown, clearFn?: Fn): Promise<FcRespo
 // 加上token
 
 instance.interceptors.request.use((config) => {
-  config.headers['token'] = localStorage.getItem('token') || ''
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers['Authorization'] = token
+  }
   return config
 })
 

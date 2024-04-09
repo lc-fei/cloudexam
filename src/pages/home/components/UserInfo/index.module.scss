@@ -6,6 +6,8 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+  margin-left: auto;
+	cursor: pointer;
 	.headerName {
 		color: $base_color;
 		flex: 1;

@@ -1,3 +1,4 @@
+import { ClassList } from '@/pages/classlist'
 import { ExamList } from '../pages/examlist'
 import { GradeList } from '../pages/examlist/pages/grade'
 import { ExamManage } from '../pages/exammanage'
@@ -28,8 +29,8 @@ export const routes = [
         element: <ExamManagementById />,
       },
       {
-        path: '/tchmanage',
-        element: <div>TCHManage Page</div>,
+        path: '/classlist',
+        element: <ClassList />,
       },
       {
         path: '/examlist',
