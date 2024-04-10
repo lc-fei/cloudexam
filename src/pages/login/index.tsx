@@ -6,6 +6,7 @@ import { apiLogin } from '@/api/user/api'
 import type { ResRoot, LoginData } from '@/api/user/type'
 import { useUserStore } from '@/store/useUserStore'
 import { useNavigate } from 'react-router-dom'
+import { msgSuccess } from '@/utils/msg'
 export const Login: React.FC = () => {
   const { setUserInfo } = useUserStore()
   const navigator = useNavigate()
@@ -14,6 +15,7 @@ export const Login: React.FC = () => {
     navigator('/register')
   }
 
+  // 登录
   const onFinish = async (values: { userName: string; passWord: string }) => {
     try {
       const req = new FormData()
@@ -29,6 +31,7 @@ export const Login: React.FC = () => {
       console.log('setUserInfo', setUserInfo)
       localStorage.setItem('token', token)
       navigator('/')
+      msgSuccess('登录成功')
     } catch (error: any) {
       notification.error({
         message: error.message,

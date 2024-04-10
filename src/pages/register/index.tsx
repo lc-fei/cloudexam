@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Form, Input, Row, Col, Select } from 'antd'
 import { ReqNew } from '@/api/user/type'
 import { apiCheck, apiNew, apiVerify } from '@/api/user/api'
-import { msgError } from '@/utils/msg'
+import { msgError, msgSuccess } from '@/utils/msg'
 
 const formItemLayout = {
   labelCol: {
@@ -41,6 +41,8 @@ export const Register: React.FC = () => {
       await apiCheck(reqForm)
       const res = await apiNew(values)
       console.log('res', res)
+      msgSuccess('注册成功！')
+      navigate('/login')
     } catch (error: any) {
       msgError(error.message)
     }
@@ -61,6 +63,7 @@ export const Register: React.FC = () => {
       console.log('checkRes', checkRes)
       const res = await apiVerify(reqForm)
       console.log('res', res)
+      msgSuccess('验证码发送成功！')
     } catch (error: any) {
       msgError(error.message)
     }
