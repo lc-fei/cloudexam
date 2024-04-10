@@ -39,3 +39,13 @@ export const DropDownMenu: MenuProps['items'] = [
     label: <div>退出登录</div>,
   },
 ]
+
+export const userPms: {
+  student: number
+  teacher: number
+  admin: number
+} = {
+  student: 1,
+  teacher: 2,
+  admin: 3,
+}

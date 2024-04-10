@@ -19,7 +19,14 @@ export const apiInfo = async (req: number[]) => {
   return res as ResRoot<infoRes>
 }
 // 加入班级
-export const apiAdd = async () => {
-  const res = await request(urlHeader + '/add', {})
-  return res
+export const apiAdd = async (req: FormData) => {
+  const res = await request(urlHeader + '/add', req)
+  return res as ResRoot<null>
 }
+
+// 离开班级
+export const apiQuit = async (req: FormData) => {
+  const res = await request(urlHeader + '/mg/quit', req)
+  return res as ResRoot<null>
+}
+

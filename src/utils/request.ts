@@ -10,13 +10,6 @@ const msgError = (msg: string) => {
     duration: 0.8
   })
 }
-const msgSuccess = (msg: string) => {
-  notification.success({
-    message: msg,
-    placement: 'topLeft',
-    duration: 0.8
-  })
-}
 
 
 // 响应数据类型
@@ -66,9 +59,9 @@ const request = <T>(url: string, params: unknown, clearFn?: Fn): Promise<FcRespo
       })
       .catch((err) => {
         console.log('err', err)
-        let message = ''
-        if (err) message = err.data.message
-        else message = err
+        let message = '异常'
+        if (err.data.message) message = err.data.message
+        else if(err.data) message = err.data
         console.log('message', message)
         msgError(message)
       })
@@ -92,9 +85,8 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use(
   (response) => {
     console.log('响应', response)
-    const { code, message } = response.data
+    const { code } = response.data
     if (code === 200) {
-      msgSuccess(message)
       return response.data    // 这里其实就是返回了一个带有data的resolvePromise
     }
     else {
