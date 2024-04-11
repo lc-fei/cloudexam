@@ -20,7 +20,7 @@ export const apiInfo = async (req: number[]) => {
 }
 // 加入班级
 export const apiAdd = async (req: FormData) => {
-  const res = await request(urlHeader + '/add', req)
+  const res = await request(urlHeader + '/mg/add', req)
   return res as ResRoot<null>
 }
 
@@ -30,3 +30,7 @@ export const apiQuit = async (req: FormData) => {
   return res as ResRoot<null>
 }
 
+export const apiClear = async (req: FormData) => {
+  const res = await request(urlHeader + '/mg/clear', req)
+  return res as ResRoot<null>
+}

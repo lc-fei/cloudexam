@@ -58,12 +58,16 @@ const request = <T>(url: string, params: unknown, clearFn?: Fn): Promise<FcRespo
         resolve(res as FcResponse<T>)
       })
       .catch((err) => {
-        console.log('err', err)
-        let message = '异常'
-        if (err.data.message) message = err.data.message
-        else if(err.data) message = err.data
-        console.log('message', message)
-        msgError(message)
+        // 根据错误码自定义错误处理
+        resolve(err.data)
+
+        // 整个系统统一的错误处理
+        // console.log('err', err)
+        // let message = '异常'
+        // if (err.data.message) message = err.data.message
+        // else if(err.data) message = err.data
+        // console.log('message', message)
+        // msgError(message)
       })
   })
 }

@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { LoginData, ReqNew, ResRoot, cRes } from "./type";
+import { LoginData, ReqNew, ResRoot, UserInfoType, cRes } from "./type";
 
 
 const urlHead = '/api/user'
@@ -32,4 +32,10 @@ export const apiCheck = async (req: FormData) => {
 export const apiC = async () => {
   const res = await request(urlHead + '/c', {})
   return res as ResRoot<cRes>
+}
+
+// 用户信息s
+export const apiList = async (req: string[]) => {
+  const res = await request(urlHead + '/list', req)
+  return res as ResRoot<UserInfoType>
 }

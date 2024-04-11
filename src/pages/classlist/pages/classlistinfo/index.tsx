@@ -2,25 +2,61 @@ import { useParams } from 'react-router-dom'
 import styles from './index.module.scss'
 import { useEffect, useState } from 'react'
 import { TeacherStudentData } from '@/api/class/type'
-import { apiInfo, apiQuit } from '@/api/class/api'
+import { apiClear, apiInfo, apiQuit } from '@/api/class/api'
 import { useNavigate } from 'react-router-dom'
 import { msgError, msgSuccess } from '@/utils/msg'
-import { Button, Space, Table, Tag } from 'antd'
+import { Button, Modal, Table, Tag } from 'antd'
 import Column from 'antd/es/table/Column'
+import { apiList } from '@/api/user/api'
+import { UserInfoType } from '@/api/user/type'
+import { userPms } from '@/constants'
+import { useUserStore } from '@/store/useUserStore'
+import { resRoot } from '@/api/exam/type'
+import { useSpinningStore } from '@/store/useSpinningStore'
 export const ClassListInfo = () => {
+  const { userinfo } = useUserStore()
+  const { setSpinningStore } = useSpinningStore()
   const { id } = useParams()
   const navigate = useNavigate()
-  const [classInfo, setClassInfo] = useState<TeacherStudentData | null>(null)
+  const [classInfo, setClassInfo] = useState<TeacherStudentData | null>(null) // 班级信息
+  const [userInfoState, setUserInfoState] = useState<UserInfoType[] | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false)
+  const [thisUserId, setThisUserId] = useState<string>('-1')
   const getClassInfo = async () => {
+    setSpinningStore(true)
     const res = await apiInfo([parseInt(id as string)])
-    setClassInfo(res.data[id as string])
+    const info: TeacherStudentData = res.data[id as string]
+    setClassInfo(info)
+    console.log('info', info)
+    await upDateUserInfoState(info.TeacherIDs, info.StudentIDs)
+    setSpinningStore(false)
   }
-  const getTeachersInfo = async () => {
-    console.log('加油写！！！')
+  // 获取班级成员信息
+  const upDateUserInfoState = async (TeacherIDs: number[] | null | undefined, StudentIDs: number[] | null) => {
+    const list: UserInfoType[] = []
+    let stringTeacherIDs: string[] = []
+    let stringStudentIDs: string[] = []
+
+    if (TeacherIDs) {
+      stringTeacherIDs = TeacherIDs?.map((item) => {
+        return item.toString()
+      })
+      const teacherRes: resRoot<UserInfoType> = await apiList(stringTeacherIDs)
+      for (const key in teacherRes.data) {
+        list.push(teacherRes.data[key])
+      }
+    }
+    if (StudentIDs) {
+      stringStudentIDs = StudentIDs?.map((item) => item.toString())
+      const studentRes: resRoot<UserInfoType> = await apiList(stringStudentIDs)
+      for (const key in studentRes.data) {
+        list.push(studentRes.data[key])
+      }
+    }
+    setUserInfoState(list)
   }
-  const getStudentsInfo = async () => {
-    console.log('加油写！！！')
-  }
+  // 退出班级
   const quitClass = async () => {
     const req = new FormData()
     req.append('classID', id as string)
@@ -30,14 +66,31 @@ export const ClassListInfo = () => {
       msgSuccess('退出班级成功')
     }
   }
+
+  // 删除用户
+  const deleteUser = async () => {
+    const reqForm = new FormData()
+    reqForm.append('classID', id as string)
+    reqForm.append('studentID', thisUserId)
+    const res = await apiClear(reqForm)
+    if (res.code === 200) {
+      setIsModalOpenDelete(false)
+      msgSuccess('删除成员成功')
+      await getClassInfo()
+    }
+  }
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
+  const handleCancelDelete = async () => {
+    setIsModalOpenDelete(false)
+  }
   useEffect(() => {
     if (!id) {
       navigate('/classlist')
       msgError('出错，请重试')
     } else {
       getClassInfo()
-      getTeachersInfo()
-      getStudentsInfo()
     }
   }, [])
 
@@ -48,42 +101,6 @@ export const ClassListInfo = () => {
   //   StudentIDs: number[] | null;
   //   Code: string
   // };
-
-  interface DataType {
-    key: React.Key
-    firstName: string
-    lastName: string
-    age: number
-    address: string
-    tags: string[]
-  }
-
-  const data: DataType[] = [
-    {
-      key: '1',
-      firstName: 'John',
-      lastName: 'Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      firstName: 'Jim',
-      lastName: 'Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      firstName: 'Joe',
-      lastName: 'Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ]
   return (
     <>
       <div className={styles['classlistinfo']}>
@@ -92,93 +109,79 @@ export const ClassListInfo = () => {
             <h1 style={{ display: 'inline-block', marginRight: '10px' }}>{classInfo?.Name}</h1>
             <a style={{ color: 'gray', cursor: 'text' }}>{'邀请号:' + classInfo?.Code}</a>
           </div>
-          <Button type="primary" danger onClick={quitClass}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => {
+              setIsModalOpen(true)
+            }}
+          >
             退出班级
           </Button>
         </div>
         <div className={styles['content']}>
-          <h2>老师：</h2>
-          <div>
-            <Table dataSource={data}>
-              <Column title="First Name" dataIndex="firstName" key="firstName" />
-              <Column title="Last Name" dataIndex="lastName" key="lastName" />
-              <Column title="Age" dataIndex="age" key="age" />
-              <Column title="Address" dataIndex="address" key="address" />
-              <Column
-                title="Tags"
-                dataIndex="tags"
-                key="tags"
-                render={(tags: string[]) => (
-                  <>
-                    {tags.map((tag) => {
-                      let color = tag.length > 5 ? 'geekblue' : 'green'
-                      if (tag === 'loser') {
-                        color = 'volcano'
-                      }
-                      return (
-                        <Tag color={color} key={tag}>
-                          {tag.toUpperCase()}
-                        </Tag>
-                      )
-                    })}
-                  </>
-                )}
-              />
-              <Column
-                title="Action"
-                key="action"
-                render={(_: any, record: DataType) => (
-                  <Space size="middle">
-                    <a>Invite {record.lastName}</a>
-                    <a>Delete</a>
-                  </Space>
-                )}
-              />
-            </Table>
-          </div>
-          <h2>学生：</h2>
-          <div>
+          <h2>人员：</h2>
+          {
             <div>
-              <Table dataSource={data}>
-                <Column title="First Name" dataIndex="firstName" key="firstName" />
-                <Column title="Last Name" dataIndex="lastName" key="lastName" />
-                <Column title="Age" dataIndex="age" key="age" />
-                <Column title="Address" dataIndex="address" key="address" />
+              <Table dataSource={userInfoState || []}>
+                <Column title="uid" dataIndex="uid" key="uid" />
+                <Column title="姓名" dataIndex="name" key="name" />
+                <Column title="用户名" dataIndex="userName" key="userName" />
+                <Column title="邮箱" dataIndex="email" key="email" />
                 <Column
-                  title="Tags"
-                  dataIndex="tags"
-                  key="tags"
-                  render={(tags: string[]) => (
+                  title="身份"
+                  dataIndex="role"
+                  key="role"
+                  render={(role: number) => (
                     <>
-                      {tags.map((tag) => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green'
-                        if (tag === 'loser') {
-                          color = 'volcano'
-                        }
-                        return (
-                          <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                          </Tag>
-                        )
-                      })}
+                      {role === userPms.student && <Tag color={'green'}>{'学生'}</Tag>}
+                      {role === userPms.teacher && <Tag color={'blue'}>{'老师'}</Tag>}
+                      {role === userPms.admin && <Tag color={'red'}>{'管理员'}</Tag>}
                     </>
                   )}
                 />
-                <Column
-                  title="Action"
-                  key="action"
-                  render={(_: any, record: DataType) => (
-                    <Space size="middle">
-                      <a>Invite {record.lastName}</a>
-                      <a>Delete</a>
-                    </Space>
-                  )}
-                />
+                {(userinfo?.role === userPms.admin || userinfo?.role === userPms.teacher) && (
+                  <Column
+                    title="操作"
+                    key="action"
+                    render={(_, record: UserInfoType) => (
+                      <>
+                        <Button
+                          danger
+                          style={{ marginRight: '10px' }}
+                          onClick={() => {
+                            setIsModalOpenDelete(true)
+                            setThisUserId(record.uid)
+                          }}
+                        >
+                          删除
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setThisUserId(record.uid)
+                          }}
+                        >
+                          查看
+                        </Button>
+                      </>
+                    )}
+                  ></Column>
+                )}
               </Table>
             </div>
-          </div>
+          }
         </div>
       </div>
+      <Modal title="退出班级" open={isModalOpen} onOk={quitClass} onCancel={handleCancel} okText="确认" cancelText="取消" okType="danger">
+        <div style={{ height: '20px' }}></div>
+        <div>确认退出班级后，您将无法再查看该班级的任何信息，确认退出？</div>
+        <div style={{ height: '20px' }}></div>
+      </Modal>
+      <Modal title="删除成员" open={isModalOpenDelete} onOk={deleteUser} onCancel={handleCancelDelete} okText="确认" cancelText="取消" okType="danger">
+        <div style={{ height: '20px' }}></div>
+        <div>确定删除该成员？</div>
+        <div style={{ height: '20px' }}></div>
+      </Modal>
     </>
   )
 }

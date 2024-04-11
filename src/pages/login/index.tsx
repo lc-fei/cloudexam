@@ -25,6 +25,7 @@ export const Login: React.FC = () => {
       //   console.log(a, b)
       // }
       const res: ResRoot<LoginData> = await apiLogin(req)
+      console.log('res', res)
       const { token, user_info } = res.data
       // 这里和在·
       setUserInfo(user_info)

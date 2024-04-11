@@ -1,3 +1,4 @@
+
 export interface ResRoot<T> {
   code: number
   message: string
@@ -7,15 +8,7 @@ export interface ResRoot<T> {
 // user
 export interface LoginData {
   token: string
-  user_info: {
-    uid: string
-    role: number
-    name: string
-    userName: string
-    passWord: string
-    avatar: string
-    email: string
-  }
+  user_info: UserInfoType
 }
 
 //new
@@ -31,3 +24,13 @@ export interface ReqNew {
 
 //c
 export type cRes = number[]
+
+export interface UserInfoType {
+  uid: string
+  role: number
+  name: string
+  userName: string
+  passWord: string
+  avatar: string
+  email: string
+}

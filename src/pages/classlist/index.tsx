@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useEffect, useState } from 'react'
 import { apiAdd, apiAll, apiInfo, apiNew } from '@/api/class/api'
 import { ResRoot, TeacherStudentData, allRes, infoRes } from '@/api/class/type'
-import { msgError } from '@/utils/msg'
+import { msgError, msgSuccess } from '@/utils/msg'
 import { useNavigate } from 'react-router-dom'
 import { useSpinningStore } from '@/store/useSpinningStore'
 import { useUserStore } from '@/store/useUserStore'
@@ -72,10 +72,15 @@ export const ClassList = () => {
         const req = new FormData()
         req.append('classToken', values.classToken)
         const res = await apiAdd(req)
-        console.log('res', res)
-        getNewClassInfo()
-        handleCancelAdd()
-        formAdd.resetFields()
+        if (res.code === 200) {
+          getNewClassInfo()
+          handleCancelAdd()
+          formAdd.resetFields()
+          msgSuccess('加入班级成功')
+        } else if (res.code === 500) {
+          msgError('邀请码错误')
+          return
+        }
       } catch (error) {
         msgError('加入班级失败')
       }
@@ -85,7 +90,7 @@ export const ClassList = () => {
       navagate('/login')
     }
   }
-
+  // 获取最新班级信息
   const getNewClassInfo = async () => {
     setSpinningStore(true)
     let classIdRes
@@ -93,6 +98,12 @@ export const ClassList = () => {
       classIdRes = (await apiAll()) as ResRoot<allRes>
     } else {
       classIdRes = (await apiC()) as ResRoot<cRes>
+    }
+    if (classIdRes.data === null) {
+      setClassIdList([])
+      setClassInfoList([])
+      setSpinningStore(false)
+      return
     }
     const classIdList = classIdRes.data
     const classInfoRes = (await apiInfo(classIdList)) as ResRoot<infoRes>
