@@ -51,17 +51,15 @@ export const userPms: {
 }
 
 export const examSt: {
-  preparaing: 1 | 2 | 3 | 4 | 5
-  going: 1 | 2 | 3 | 4 | 5
-  gone: 1 | 2 | 3 | 4 | 5
-  marking: 1 | 2 | 3 | 4 | 5
-  ended: 1 | 2 | 3 | 4 | 5
+  preparaing: 1 | 2 | 3 | 4 | 5 | 6
+  sharing: 1 | 2 | 3 | 4 | 5 | 6
+  marking: 1 | 2 | 3 | 4 | 5 | 6
+  ended: 1 | 2 | 3 | 4 | 5 | 6
 } = {
-  preparaing: 1, // 等待管理员设置考试配置
-  going: 2, // 考试中
-  gone: 3, // 考试结束，等待分发批改任务
-  marking: 4, // 批改中
-  ended: 5, // 批改完成
+  preparaing: 1, // 等待设置考试配置
+  sharing: 2, // 等待分发批改任务
+  marking: 3, // 批改中
+  ended: 4, // 批改完成
 }
 
 type SubjectsType = '数学' | '物理' | '化学' | '生物' | '语文' | '英语' | '政治' | '历史' | '地理'

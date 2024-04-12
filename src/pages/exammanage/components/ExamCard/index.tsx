@@ -2,71 +2,47 @@ import { Tag } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useBreadRouterStore } from '../../../../store/useBreadRouterStore'
 import styles from './index.module.scss'
+import { ExamInfoType } from '@/api/exam/type'
 
-export const ExamCardMTitle = ({
-	name,
-	time,
-	grade,
-	id,
-}: {
-	name: string
-	time: string
-	grade: string
-	id: string | number
-}) => {
-	const navigator = useNavigate()
-	const BreadcrumbItems = useBreadRouterStore((state) => state.routers)
-	const poprouter = useBreadRouterStore((state) => state.poprouter)
-	const pushrouter = useBreadRouterStore((state) => state.pushrouter)
-	return (
-		<div className={styles['manage-exam-card-title']}>
-			<div
-				className={styles['title-content']}
-				onClick={() => {
-					pushrouter({ title: name, path: `/exammanage/management/${id}` })
-					navigator(`/exammanage/management/${id}`)
-				}}
-			>
-				<h2>{name}</h2>
-			</div>
-			<span>{time}</span>|<span>{grade}</span>
-		</div>
-	)
+export const ExamCardMTitle = ({ id, name, subjects, createTime }: ExamInfoType) => {
+  function timestampToDateFormat(timestampInSeconds) {
+    // 将秒转换为毫秒
+    const timestampInMilliseconds = timestampInSeconds * 1000
+    // 创建Date对象
+    const date = new Date(timestampInMilliseconds)
+    // 获取年、月、日
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0') // 月份从0开始，所以要+1
+    const day = String(date.getDate()).padStart(2, '0') // 使用padStart确保总是两位数
+
+    // 拼接成年-月-日的格式
+    return `${year}-${month}-${day}`
+  }
+  const navigator = useNavigate()
+  const pushrouter = useBreadRouterStore((state) => state.pushrouter)
+  return (
+    <div className={styles['manage-exam-card-title']}>
+      <div
+        className={styles['title-content']}
+        onClick={() => {
+          pushrouter({ title: name, path: `/exammanage/management/${id}` })
+          navigator(`/exammanage/management/${id}`)
+        }}
+      >
+        <h2>{name}</h2>
+      </div>
+      <span>{timestampToDateFormat(createTime)}</span> | <span>{subjects}</span>
+    </div>
+  )
 }
 
-export const ExamCardMTags = ({
-	noinitsheet,
-	noSheets,
-	noStudents,
-	noallocated,
-	alldone,
-}: {
-	noinitsheet: boolean
-	noSheets: boolean
-	noStudents: boolean
-	noallocated: boolean
-	alldone: boolean
-}) => {
-	const text2tags = {
-		noinitsheet: '待上传模板答题卡',
-		noSheets: '待上传答题卡',
-		noStudents: '待上传学生名单',
-		noallocated: '待分配试题',
-		alldone: '管理已完成',
-	}
-	if (alldone) {
-		return (
-			<div className={styles['tags']}>
-				<Tag color='success'>{text2tags['alldone']}</Tag>
-			</div>
-		)
-	} else
-		return (
-			<div className={styles['tags']}>
-				{noinitsheet && <Tag color='error'>{text2tags['noinitsheet']}</Tag>}
-				{noSheets && <Tag color='error'>{text2tags['noSheets']}</Tag>}
-				{noStudents && <Tag color='error'>{text2tags['noStudents']}</Tag>}
-				{noallocated && <Tag color='error'>{text2tags['noallocated']}</Tag>}
-			</div>
-		)
+export const ExamCardMTags = ({ state }: ExamInfoType) => {
+  const options = { 0: '测试、后期删除', 1: '待管理员设置考试配置', 2: '待管理员分发批改任务', 3: '老师批改中', 4: '批改完成' }
+
+  return (
+    <div className={styles['tags']}>
+      {state === 4 && <Tag color="blue">{options[state]}</Tag>}
+      {state !== 4 && <Tag color="error">{options[state]}</Tag>}
+    </div>
+  )
 }

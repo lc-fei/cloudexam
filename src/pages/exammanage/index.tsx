@@ -1,32 +1,26 @@
 import { Button, Input, List, Modal, Select, Form } from 'antd'
-import { ManageExamStatusMock } from '../../mock'
 import { ExamCardMTags, ExamCardMTitle } from './components/ExamCard'
 import styles from './index.module.scss'
 import { useUserStore } from '@/store/useUserStore'
 import { examSubjects, userPms } from '@/constants'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TextArea from 'antd/es/input/TextArea'
-import { reqNew, resAll, resRoot } from '@/api/exam/type'
-import { apiAll, apiNew } from '@/api/exam/api'
+import { ExamInfoType, reqNew, resAll, resInfo, resRoot } from '@/api/exam/type'
+import { apiAll, apiInfo, apiNew } from '@/api/exam/api'
 import { useSpinningStore } from '@/store/useSpinningStore'
 import { msgSuccess } from '@/utils/msg'
 export const ExamManage = () => {
+  const [examInfoList, setExamInfoList] = useState<ExamInfoType[] | undefined>(undefined)
   const { userinfo } = useUserStore()
   const { setSpinningStore } = useSpinningStore()
   const [form] = Form.useForm()
-  ManageExamStatusMock.map((item, _) => {
-    item.noSheets = true
-    item.noStudents = true
-    item.noallocated = true
-    item.noinitsheet = true
-    item.alldone = false
-  })
   const addExam = () => {
     setIsModalOpen(true)
     console.log('add exam')
   }
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  // 添加考试
   const onFinish = async (values: reqNew) => {
     setSpinningStore(true)
     const res = await apiNew(values)
@@ -38,17 +32,26 @@ export const ExamManage = () => {
     setSpinningStore(false)
   }
 
+  // 更新考试列表
   const updateExamInfoList = async () => {
+    setSpinningStore(true)
     const allRes: resRoot<resAll> = await apiAll()
     const examIdList = allRes.data
-    console.log('examIdList', allRes)
+    const infoRes: resRoot<resInfo> = await apiInfo(examIdList)
+    const infoObj = infoRes.data
+    setExamInfoList(Object.values(infoObj))
+    setSpinningStore(false)
   }
 
+  //
   const handleCancel = () => {
     setIsModalOpen(false)
     form.resetFields()
   }
 
+  useEffect(() => {
+    updateExamInfoList()
+  }, [])
   return (
     <div>
       <div className={styles['head-actions']}>
@@ -66,13 +69,12 @@ export const ExamManage = () => {
           ]}
         />
         <Select
-          defaultValue={'all'}
+          defaultValue={1}
           options={[
             { value: 1, label: '待管理员设置考试配置' },
-            { value: 2, label: '考试中' },
-            { value: 3, label: '待管理员分发批改任务' },
-            { value: 4, label: '老师批改中' },
-            { value: 5, label: '批改完成' },
+            { value: 2, label: '待管理员分发批改任务' },
+            { value: 3, label: '老师批改中' },
+            { value: 4, label: '批改完成' },
           ]}
         />
         {userinfo?.role === userPms.admin && (
@@ -93,7 +95,7 @@ export const ExamManage = () => {
             showSizeChanger: false,
             showTotal: (total) => `共 ${total} 条数据`,
           }}
-          dataSource={ManageExamStatusMock}
+          dataSource={examInfoList}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta title={<ExamCardMTitle {...item} />} description={<ExamCardMTags {...item} />}></List.Item.Meta>
@@ -101,7 +103,7 @@ export const ExamManage = () => {
           )}
         ></List>
       </div>
-      <Modal title="新增班级" open={isModalOpen} onCancel={handleCancel} footer="">
+      <Modal title="添加考试" open={isModalOpen} onCancel={handleCancel} footer="">
         <Form form={form} name="newClass" layout="vertical" autoComplete="off" onFinish={onFinish}>
           <Form.Item name="name" label="考试名称" rules={[{ required: true, message: '请输入考试名称!' }]}>
             <Input />

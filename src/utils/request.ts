@@ -1,16 +1,7 @@
-import { notification } from 'antd'
 import axios, { AxiosResponse } from 'axios'
+import { msgError } from './msg'
 
 type Fn = (data: AxiosResponse) => unknown
-
-const msgError = (msg: string) => {
-  notification.error({
-    message: msg,
-    placement: 'topLeft',
-    duration: 0.8
-  })
-}
-
 
 // 响应数据类型
 interface FcResponse<T> {
@@ -58,16 +49,20 @@ const request = <T>(url: string, params: unknown, clearFn?: Fn): Promise<FcRespo
         resolve(res as FcResponse<T>)
       })
       .catch((err) => {
-        // 根据错误码自定义错误处理
-        resolve(err.data)
-
-        // 整个系统统一的错误处理
-        // console.log('err', err)
-        // let message = '异常'
-        // if (err.data.message) message = err.data.message
-        // else if(err.data) message = err.data
-        // console.log('message', message)
-        // msgError(message)
+        // 一、根据错误码自定义错误处理
+        // 1.抛出错误，让组件自己去trycatch
+        // 这里有个问题就是好像api还需要去trycatch一次，把错误抛给组件  (这个不需要，如果有错误，函数会直接抛给调用者。但是不知道为什么组件还是不能catch到)
+        // throw new Error(err)
+        // 2. 让组件组件自己通过code码去处理
+        // console.log('请求出错err', err)
+        // resolve(err)
+        // 二、统一处理
+        console.log('请求出错err', err)
+        let message = '请求出错'
+        if (err.data.message) message = err.data.message
+        else if (err.data) message = err.data
+        console.log('message', message)
+        msgError(message)
       })
   })
 }
