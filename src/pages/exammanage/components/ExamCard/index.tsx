@@ -4,7 +4,7 @@ import { useBreadRouterStore } from '../../../../store/useBreadRouterStore'
 import styles from './index.module.scss'
 import { ExamInfoType } from '@/api/exam/type'
 
-export const ExamCardMTitle = ({ id, name, subjects, createTime }: ExamInfoType) => {
+export const ExamCardMTitle = ({ examID, name, subjects, createTime }: ExamInfoType) => {
   function timestampToDateFormat(timestampInSeconds) {
     // 将秒转换为毫秒
     const timestampInMilliseconds = timestampInSeconds * 1000
@@ -25,8 +25,8 @@ export const ExamCardMTitle = ({ id, name, subjects, createTime }: ExamInfoType)
       <div
         className={styles['title-content']}
         onClick={() => {
-          pushrouter({ title: name, path: `/exammanage/management/${id}` })
-          navigator(`/exammanage/management/${id}`)
+          pushrouter({ title: name, path: `/exammanage/management/${examID}` })
+          navigator(`/exammanage/management/${examID}`)
         }}
       >
         <h2>{name}</h2>

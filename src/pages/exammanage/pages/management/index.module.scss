@@ -1,31 +1,48 @@
-.header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
+.management {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .header  {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .mother {
+    padding: 8px 0 13px 0; 
+    width: 100%; 
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 15px;
+  }
+  .content {
+    width: 100%;
+    border: none !important;
+    padding: 15px;
+    h2 {
+      margin-bottom: 8px;
+    }
+    
+      .content {
+        width: 100%;
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+        .mycard {
+          background-color: #f1f6fd;
+          border: 1px solid #ccc;
+          height: 160px;
+          .mymeta {
+            color: #fff;
+          }
+        }
+      }
 
-.content {
-	.upload-sheetlist {
-		&-container {
-			width: 100px;
-			height: 100px;
-			border: 1px solid #ccc;
-			position: relative;
-
-			&::before {
-				content: '+';
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				font-size: 50px;
-			}
-			.upload-sheetlist-input {
-				// display: none;
-				width: 100px;
-				height: 100px;
-				z-index: 1;
-			}
-		}
-	}
+  }
 }

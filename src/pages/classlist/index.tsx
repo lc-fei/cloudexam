@@ -143,7 +143,7 @@ export const ClassList = () => {
                     navagate('/classlist/detail/' + item.ID)
                   }}
                 >
-                  <Meta title={item.Name} description={'班级号：' + item.Code} />
+                  <Meta title={item.Name} description={'班级号：' + item.Code + '  |  id：' + item.ID} />
                 </Card>
               </div>
             )

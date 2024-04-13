@@ -51,10 +51,10 @@ export const userPms: {
 }
 
 export const examSt: {
-  preparaing: 1 | 2 | 3 | 4 | 5 | 6
-  sharing: 1 | 2 | 3 | 4 | 5 | 6
-  marking: 1 | 2 | 3 | 4 | 5 | 6
-  ended: 1 | 2 | 3 | 4 | 5 | 6
+  preparaing: 1 | 2 | 3 | 4
+  sharing: 1 | 2 | 3 | 4
+  marking: 1 | 2 | 3 | 4
+  ended: 1 | 2 | 3 | 4
 } = {
   preparaing: 1, // 等待设置考试配置
   sharing: 2, // 等待分发批改任务

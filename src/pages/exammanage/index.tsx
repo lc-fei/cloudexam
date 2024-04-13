@@ -6,7 +6,7 @@ import { examSubjects, userPms } from '@/constants'
 import { useState, useEffect } from 'react'
 import TextArea from 'antd/es/input/TextArea'
 import { ExamInfoType, reqNew, resAll, resInfo, resRoot } from '@/api/exam/type'
-import { apiAll, apiInfo, apiNew } from '@/api/exam/api'
+import { apiAll, apiInfoExam, apiNew } from '@/api/exam/api'
 import { useSpinningStore } from '@/store/useSpinningStore'
 import { msgSuccess } from '@/utils/msg'
 export const ExamManage = () => {
@@ -37,9 +37,13 @@ export const ExamManage = () => {
     setSpinningStore(true)
     const allRes: resRoot<resAll> = await apiAll()
     const examIdList = allRes.data
-    const infoRes: resRoot<resInfo> = await apiInfo(examIdList)
-    const infoObj = infoRes.data
-    setExamInfoList(Object.values(infoObj))
+    if (!examIdList) {
+      setExamInfoList([])
+    } else {
+      const infoRes: resRoot<resInfo> = await apiInfoExam(examIdList)
+      const infoObj = infoRes.data
+      setExamInfoList(Object.values(infoObj))
+    }
     setSpinningStore(false)
   }
 

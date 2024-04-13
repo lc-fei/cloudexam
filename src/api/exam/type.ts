@@ -1,4 +1,3 @@
-import exp from "constants"
 
 export interface resRoot<T> {
   code: number
@@ -14,12 +13,12 @@ export interface reqNew {
 }
 export type resAll = number[]
 
-export type resInfo = {
-  [key: string]: ExamInfoType
-}
+export type resInfo = ExamInfoType[]
+
+
 
 export type ExamInfoType = {
-  id: number
+  examID: number[]
   paperID: number
   state: number
   name: string
@@ -29,3 +28,7 @@ export type ExamInfoType = {
   classIDs: number[]
 }
 
+export type reqPlan = {
+  cut: string[]
+  examID: string
+}
