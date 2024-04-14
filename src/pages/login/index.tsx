@@ -45,8 +45,9 @@ export const Login: React.FC = () => {
   return (
     <>
       <div className={styles['Login']}>
+        <div className={styles['logo']}></div>
         <div className={styles['box']}>
-          <h1>阅卷系统</h1>
+          <h1 style={{ textAlign: 'center' }}>阅卷系统</h1>
           <Form name="normal_login" className="login-form" initialValues={{ userName: 'admin', passWord: 'root', remember: true }} onFinish={onFinish}>
             <Form.Item name="userName" rules={[{ required: true, message: 'Please input your Username!' }]}>
               <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
@@ -54,13 +55,9 @@ export const Login: React.FC = () => {
             <Form.Item name="passWord" rules={[{ required: true, message: 'Please input your Password!' }]}>
               <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="Password" />
             </Form.Item>
-            <Form.Item>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>记住我</Checkbox>
-              </Form.Item>
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">
+
+            <Form.Item style={{ textAlign: 'center' }}>
+              <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%', marginBottom: '10px' }}>
                 登录
               </Button>
               <a onClick={changeIsLogin}>立即注册</a>

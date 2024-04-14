@@ -71,8 +71,9 @@ export const Register: React.FC = () => {
   return (
     <>
       <div className={styles['rigister']}>
+        <div className={styles['logo']}></div>
         <div className={styles['box']}>
-          <h1>注册</h1>
+          <h1 style={{ textAlign: 'center' }}>注册</h1>
           <Form {...formItemLayout} form={form} name="register" onFinish={onFinish} style={{ maxWidth: 600 }} scrollToFirstError>
             <Form.Item name="name" label="姓名" tooltip="请输入真实姓名" rules={[{ required: true, message: '请输入姓名！', whitespace: true }]}>
               <Input />
@@ -161,7 +162,7 @@ export const Register: React.FC = () => {
               </Row>
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" style={{ width: '30%' }}>
                 注册
               </Button>
               <a onClick={changeIsLogin}>已有账号？点此登录</a>

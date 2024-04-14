@@ -8,7 +8,6 @@ import styles from './index.module.scss'
 import { MenuItemType } from 'antd/es/menu/hooks/useItems'
 import { msgError } from '@/utils/msg'
 import { useSpinningStore } from '@/store/useSpinningStore'
-
 const { Header, Content, Footer } = Layout
 
 export const HomePage = () => {
@@ -45,7 +44,7 @@ export const HomePage = () => {
       <Layout className={styles['Layout']}>
         <Header className={styles['Header']}>
           <div className={styles['HeaderContent']}>
-            <h1 className={styles['HeaderTitle']}>CloudExam</h1>
+            <div className={styles['logo']}></div>
             <Menu
               theme="light"
               mode="horizontal"
