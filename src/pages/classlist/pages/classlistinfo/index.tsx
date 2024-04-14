@@ -13,6 +13,8 @@ import { userPms } from '@/constants'
 import { useUserStore } from '@/store/useUserStore'
 import { resRoot } from '@/api/exam/type'
 import { useSpinningStore } from '@/store/useSpinningStore'
+import { ClassEchartsLine } from './components/classechartsline'
+import { ClassEchartsCircle } from './components/classchartscircle'
 export const ClassListInfo = () => {
   const { userinfo } = useUserStore()
   const { setSpinningStore } = useSpinningStore()
@@ -120,56 +122,56 @@ export const ClassListInfo = () => {
           </Button>
         </div>
         <div className={styles['content']}>
-          <h2>人员：</h2>
-          {
-            <div>
-              <Table dataSource={userInfoState || []}>
-                <Column title="uid" dataIndex="uid" key="uid" />
-                <Column title="姓名" dataIndex="name" key="name" />
-                <Column title="用户名" dataIndex="userName" key="userName" />
-                <Column title="邮箱" dataIndex="email" key="email" />
-                <Column
-                  title="身份"
-                  dataIndex="role"
-                  key="role"
-                  render={(role: number) => (
-                    <>
-                      {role === userPms.student && <Tag color={'green'}>{'学生'}</Tag>}
-                      {role === userPms.teacher && <Tag color={'blue'}>{'老师'}</Tag>}
-                      {role === userPms.admin && <Tag color={'red'}>{'管理员'}</Tag>}
-                    </>
-                  )}
-                />
-                {(userinfo?.role === userPms.admin || userinfo?.role === userPms.teacher) && (
+          <div>
+            <h2>人员：</h2>
+            {
+              <div>
+                <Table dataSource={userInfoState || []}>
+                  <Column title="uid" dataIndex="uid" key="uid" />
+                  <Column title="姓名" dataIndex="name" key="name" />
+                  <Column title="邮箱" dataIndex="email" key="email" />
                   <Column
-                    title="操作"
-                    key="action"
-                    render={(_, record: UserInfoType) => (
+                    title="身份"
+                    dataIndex="role"
+                    key="role"
+                    render={(role: number) => (
                       <>
-                        <Button
-                          danger
-                          style={{ marginRight: '10px' }}
-                          onClick={() => {
-                            setIsModalOpenDelete(true)
-                            setThisUserId(record.uid)
-                          }}
-                        >
-                          删除
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            setThisUserId(record.uid)
-                          }}
-                        >
-                          查看
-                        </Button>
+                        {role === userPms.student && <Tag color={'green'}>{'学生'}</Tag>}
+                        {role === userPms.teacher && <Tag color={'blue'}>{'老师'}</Tag>}
+                        {role === userPms.admin && <Tag color={'red'}>{'管理员'}</Tag>}
                       </>
                     )}
-                  ></Column>
-                )}
-              </Table>
-            </div>
-          }
+                  />
+                  {(userinfo?.role === userPms.admin || userinfo?.role === userPms.teacher) && (
+                    <Column
+                      title="操作"
+                      key="action"
+                      render={(_, record: UserInfoType) => (
+                        <>
+                          <Button
+                            danger
+                            style={{ marginRight: '10px' }}
+                            onClick={() => {
+                              setIsModalOpenDelete(true)
+                              setThisUserId(record.uid)
+                            }}
+                          >
+                            删除成员
+                          </Button>
+                        </>
+                      )}
+                    ></Column>
+                  )}
+                </Table>
+              </div>
+            }
+          </div>
+          <div>
+            <h2 style={{ marginTop: '5px', marginBottom: '10px' }}>班级成绩概况：</h2>
+            <ClassEchartsLine></ClassEchartsLine>
+            <h3 style={{ marginTop: '5px', marginBottom: '10px' }}>上次考试学生成绩占比：</h3>
+            <ClassEchartsCircle></ClassEchartsCircle>
+          </div>
         </div>
       </div>
       <Modal title="退出班级" open={isModalOpen} onOk={quitClass} onCancel={handleCancel} okText="确认" cancelText="取消" okType="danger">

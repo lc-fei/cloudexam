@@ -10,7 +10,7 @@ import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from '@ant-design/i
 import { apiUploadAnswer, apiUploadPaper } from '@/api/upload/api'
 import { reqNewList } from '@/api/paper/type'
 import { apiInfo } from '@/api/class/api'
-import { apiNew } from '@/api/paper/api'
+import { apiNew, apiNewAnswer } from '@/api/paper/api'
 import Meta from 'antd/es/card/Meta'
 export const ExamManagementById = () => {
   const { id } = useParams()
@@ -52,18 +52,22 @@ export const ExamManagementById = () => {
   }
 
   // 上传答案
-  const handleUploadAnswer = async (options) => {
-    const { file } = options
-    const formData = new FormData()
-    formData.append('data', file)
-    formData.append('type', 'paper')
-
-    const res = await apiUploadAnswer(formData)
-    const answerUrl = res.data
-    
-    console.log('answerUrl', answerUrl)
-    msgSuccess('上传成功、请勿重复上传')
-    return res.data
+  const onFinishAnswer = async (values) => {
+    setSpinningStore(true)
+    const urlList: string[] | undefined = []
+    for (const item of values.file.fileList) {
+      const reqForm = new FormData()
+      reqForm.append('data', item.originFileObj)
+      const res = await apiUploadAnswer(reqForm)
+      urlList.push(res.data)
+    }
+    const res = await apiNewAnswer({
+      examID: parseInt(id as string),
+      img: urlList,
+    })
+    console.log('res', res)
+    msgSuccess('上传成功')
+    setSpinningStore(false)
   }
   // 上传前检查
   const beforeUpload = (file) => {
@@ -78,18 +82,6 @@ export const ExamManagementById = () => {
     console.log(isJPGorPNG && isLt2M)
     if (isJPGorPNG && isLt2M) return false
     else return Upload.LIST_IGNORE
-  }
-  const beforeUploadAnswer = (file) => {
-    const isJPGorPNG = file.type === 'image/jpeg' || file.type === 'image/png'
-    if (!isJPGorPNG) {
-      msgError('只能上传 JPG/PNG 格式的图片!')
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2
-    if (!isLt2M) {
-      msgError('图片必须小于 2MB!')
-    }
-    console.log(isJPGorPNG && isLt2M)
-    return isJPGorPNG && isLt2M
   }
   // 学生试卷上传
   const onFinish = async (values) => {
@@ -129,6 +121,7 @@ export const ExamManagementById = () => {
     setIsModalOpenAdd(false)
   }
   const [formAdd] = Form.useForm()
+  const [answerForm] = Form.useForm()
   const onFinishAdd = async (values) => {
     console.log('Received values of form:', values)
     const req = new FormData()
@@ -231,7 +224,7 @@ export const ExamManagementById = () => {
                   name="AddPaper"
                   onFinish={onFinish}
                   style={{
-                    maxWidth: 500,
+                    maxWidth: 400,
                   }}
                   autoComplete="off"
                 >
@@ -302,17 +295,42 @@ export const ExamManagementById = () => {
               </div>
             </div>
             <div>
-              <h3>答卷上传:</h3>
+              <h3>试卷答卷上传:</h3>
               <div>
-                <Upload
-                  name="file"
-                  action="noop" // 使用 noop 防止默认的上传行为
-                  showUploadList={false} // 不显示默认的上传列表
-                  customRequest={handleUploadAnswer} // 使用自定义的上传处理函数
-                  beforeUpload={beforeUploadAnswer} // 上传前的文件校验
+                <Form
+                  form={answerForm}
+                  name="uploadAnswer"
+                  onFinish={onFinishAnswer}
+                  style={{
+                    maxWidth: 400,
+                  }}
+                  autoComplete="off"
                 >
-                  <Button icon={<UploadOutlined />}>点击上传答案</Button>
-                </Upload>
+                  <Form.Item
+                    style={{ width: '400px' }}
+                    name={'file'}
+                    rules={[
+                      {
+                        required: true,
+                        message: '该试卷题目不能为空!',
+                      },
+                    ]}
+                  >
+                    <Upload
+                      name="file"
+                      action="noop" // 使用 noop 防止默认的上传行为
+                      beforeUpload={beforeUpload} // 上传前的文件校验
+                      showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }} // 自定义上传列表显示
+                    >
+                      <Button icon={<UploadOutlined />}>点击上传答案</Button>
+                    </Upload>
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      确定上传
+                    </Button>
+                  </Form.Item>
+                </Form>
               </div>
             </div>
           </div>
@@ -339,7 +357,7 @@ export const ExamManagementById = () => {
           </div>
           <div className={styles['mother']}>
             <h3 style={{ display: 'inline-block', marginRight: '10px' }}>分发考试任务:</h3>
-            <i style={{ fontStyle: 'normal' }}>总题数：{examInfo?.paperID ? examInfo?.paperID.length : 0}</i>
+            <i style={{ fontStyle: 'normal' }}>注意切片总题数与上传总题目数量的对应</i>
             <Form style={{ maxWidth: 500 }} form={formPlan} autoComplete="off" onFinish={onFinishPlan}>
               <Form.Item
                 name="cutString"
