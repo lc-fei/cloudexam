@@ -52,7 +52,7 @@ export const HomePage = () => {
               items={AdmMenu}
               defaultActiveFirst={true}
               className={styles['HeaderMenu']}
-              style={{ height: '72px' }}
+              style={{ height: '73px' }}
               onClick={(e) => {
                 clearrouters()
                 pushrouter({

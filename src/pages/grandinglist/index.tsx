@@ -1,6 +1,4 @@
-import { Input, List, Radio, Select } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { ExamListMock } from '../../mock'
+import { List, Radio } from 'antd'
 import { ExamCardDescription, ExamCardTitle } from './components/ExamCard'
 import styles from './index.module.scss'
 import { apiIdList } from '@/api/teacher/api'
@@ -20,7 +18,6 @@ export const GrandingList = () => {
     const examList = await apiInfoExam(examIdList)
     setExamList(examList.data)
   }
-  const navigator = useNavigate()
   return (
     <>
       {/* 头部操作 */}

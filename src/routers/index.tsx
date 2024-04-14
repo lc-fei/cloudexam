@@ -43,10 +43,6 @@ export const routes = [
         path: '/classlist/detail/:id',
         element: <ClassListInfo />,
       },
-      // {
-      //   path: '/examlist',
-      //   element: <ExamList />,
-      // },
       {
         path: '/grandinglist',
         element: <GrandingList />,

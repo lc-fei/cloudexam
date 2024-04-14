@@ -61,7 +61,7 @@ export const examSt: {
 export const getexamSt = (num: number) => {
   const values = ['状态占位符', '等待设置考试配置', '等待分发批改任务', '批改中', '批改完成']
   return values[num] as string
-} 
+}
 
 type SubjectsType = '数学' | '物理' | '化学' | '生物' | '语文' | '英语' | '政治' | '历史' | '地理'
 export const examSubjects: {
