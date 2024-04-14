@@ -31,7 +31,7 @@ export const ExamCardMTitle = ({ examID, name, subjects, createTime }: ExamInfoT
       >
         <h2>{name}</h2>
       </div>
-      <span>{timestampToDateFormat(createTime)}</span> | <span>{subjects}</span>
+      <span>{timestampToDateFormat(createTime)}</span> | <span>{subjects}</span> | <span>考试ID：{examID}</span>
     </div>
   )
 }

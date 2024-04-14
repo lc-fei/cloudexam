@@ -134,6 +134,7 @@ export const ExamManagementById = () => {
     const res = await apiJoin(req)
     console.log(res)
     formAdd.resetFields()
+    getExamInfo()
     msgSuccess('添加成功')
     setIsModalOpenAdd(false)
   }

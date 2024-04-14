@@ -1,13 +1,14 @@
 import { ClassList } from '@/pages/classlist'
-import { ExamList } from '../pages/examlist'
-import { GradeList } from '../pages/examlist/pages/grade'
+// import { ExamList } from '../pages/examlist'
 import { ExamManage } from '../pages/exammanage'
 import { ExamManagementById } from '../pages/exammanage/pages/management'
 import { HomePage } from '../pages/home'
 import { Login } from '../pages/login'
 import { Register } from '../pages/register'
-import path from 'path'
 import { ClassListInfo } from '@/pages/classlist/pages/classlistinfo'
+import { Navigate } from 'react-router-dom'
+import { GrandingList } from '@/pages/grandinglist'
+import { ExamMark } from '@/pages/grandinglist/page/exammark'
 
 export const routes = [
   {
@@ -22,6 +23,10 @@ export const routes = [
     path: '/',
     element: <HomePage />,
     children: [
+      {
+        path: '/',
+        element: <Navigate to="/exammanage" />,
+      },
       {
         path: '/exammanage',
         element: <ExamManage />,
@@ -38,17 +43,17 @@ export const routes = [
         path: '/classlist/detail/:id',
         element: <ClassListInfo />,
       },
-      {
-        path: '/examlist',
-        element: <ExamList />,
-      },
-      {
-        path: '/examlist/gradelist/:id',
-        element: <GradeList />,
-      },
+      // {
+      //   path: '/examlist',
+      //   element: <ExamList />,
+      // },
       {
         path: '/grandinglist',
-        element: <GradeList />,
+        element: <GrandingList />,
+      },
+      {
+        path: '/grandinglist/exammark/:id',
+        element: <ExamMark />,
       },
     ],
   },

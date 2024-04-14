@@ -31,7 +31,7 @@ export const Login: React.FC = () => {
       setUserInfo(user_info)
       console.log('setUserInfo', setUserInfo)
       localStorage.setItem('token', token)
-      navigator('/')
+      navigator('/exammanage')
       msgSuccess('登录成功')
     } catch (error: any) {
       notification.error({

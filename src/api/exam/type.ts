@@ -18,8 +18,8 @@ export type resInfo = ExamInfoType[]
 
 
 export type ExamInfoType = {
-  examID: number[]
-  paperID: number
+  examID: number
+  paperID: number[]
   state: number
   name: string
   desc: string
