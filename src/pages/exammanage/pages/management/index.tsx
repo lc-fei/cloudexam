@@ -156,18 +156,8 @@ export const ExamManagementById = () => {
   const onFinishPlan = async (values) => {
     const cutStringArray = values.cutString.split('/')
     // 更新状态
-    let num = 0
-    cutStringArray.forEach((item) => {
-      num += parseInt(item)
-    })
     if (!examInfo?.paperID) {
       msgError('请先上传试卷')
-      return
-    } else if (num > examInfo?.paperID.length) {
-      msgError('切片数量不能大于试卷总数量')
-      return
-    } else if (num < examInfo?.paperID.length) {
-      msgError('切片数量不能小于试卷总数量')
       return
     } else {
       setSpinningStore(true)
