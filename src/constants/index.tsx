@@ -1,29 +1,57 @@
 import type { MenuProps } from 'antd'
-export const TchMenu: MenuProps['items'] = [
-  {
-    label: '考试列表',
-    key: '/examlist',
-  },
-  {
-    label: '教师阅卷',
-    key: '/grandinglist',
-  },
-]
 
-export const AdmMenu: MenuProps['items'] = [
-  {
-    label: '考试管理',
-    key: '/exammanage',
-  },
-  {
-    label: '班级管理',
-    key: '/classlist',
-  },
-  {
-    label: '教师阅卷',
-    key: '/grandinglist',
-  },
-]
+export const getMenu = () => {
+  const user = localStorage.getItem('user')
+  const userObj = JSON.parse(user as string)
+  const role = userObj.state.userinfo.role
+  if (role === 1) {
+    return [
+      {
+        label: '班级管理',
+        key: '/classlist',
+      },
+    ]
+  }
+  if (role === 2) {
+    return [
+      {
+        label: '班级管理',
+        key: '/classlist',
+      },
+      {
+        label: '教师阅卷',
+        key: '/grandinglist',
+      },
+    ]
+  }
+  if (role === 3) {
+    return [
+      {
+        label: '考试管理',
+        key: '/exammanage',
+      },
+      {
+        label: '班级管理',
+        key: '/classlist',
+      },
+    ]
+  }
+}
+
+// export const AdmMenu: MenuProps['items'] = [
+//   {
+//     label: '考试管理',
+//     key: '/exammanage',
+//   },
+//   {
+//     label: '班级管理',
+//     key: '/classlist',
+//   },
+//   {
+//     label: '教师阅卷',
+//     key: '/grandinglist',
+//   },
+// ]
 
 export const DropDownMenu: MenuProps['items'] = [
   // {

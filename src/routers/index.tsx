@@ -6,7 +6,6 @@ import { HomePage } from '../pages/home'
 import { Login } from '../pages/login'
 import { Register } from '../pages/register'
 import { ClassListInfo } from '@/pages/classlist/pages/classlistinfo'
-import { Navigate } from 'react-router-dom'
 import { GrandingList } from '@/pages/grandinglist'
 import { ExamMark } from '@/pages/grandinglist/page/exammark'
 
@@ -23,10 +22,6 @@ export const routes = [
     path: '/',
     element: <HomePage />,
     children: [
-      {
-        path: '/',
-        element: <Navigate to="/exammanage" />,
-      },
       {
         path: '/exammanage',
         element: <ExamManage />,

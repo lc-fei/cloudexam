@@ -1,7 +1,7 @@
 import { Breadcrumb, Dropdown, Layout, Menu, Spin } from 'antd'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { AdmMenu, DropDownMenu } from '../../constants'
+import { DropDownMenu, getMenu } from '../../constants'
 import { useBreadRouterStore } from '../../store/useBreadRouterStore'
 import { UserInfo } from './components/UserInfo'
 import styles from './index.module.scss'
@@ -16,6 +16,7 @@ export const HomePage = () => {
   const pushrouter = useBreadRouterStore((state) => state.pushrouter)
   const clearrouters = useBreadRouterStore((state) => state.clearrouters)
   const { spinningStore } = useSpinningStore()
+  const [menu, setMenu] = useState<MenuItemType[]>([])
   const menuClick = (e: MenuItemType) => {
     const { key } = e
     if (key === 'changepwd') {
@@ -29,6 +30,7 @@ export const HomePage = () => {
   }
   useEffect(() => {
     // * 挂载时添加默认路由
+    setMenu(getMenu() as MenuItemType[])
     if (!localStorage.getItem('token')) {
       navigator('/login')
       msgError('请先登录')
@@ -48,7 +50,7 @@ export const HomePage = () => {
             <Menu
               theme="light"
               mode="horizontal"
-              items={AdmMenu}
+              items={menu}
               defaultActiveFirst={true}
               className={styles['HeaderMenu']}
               style={{ height: '73px' }}

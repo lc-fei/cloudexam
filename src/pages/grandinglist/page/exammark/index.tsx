@@ -94,6 +94,7 @@ export const ExamMark = () => {
                       <img src={answerUrlList[item.OffSet]} />
                     </div>
                   </div>
+                  <div></div>
                   <Form
                     name="scoreForm"
                     form={form}

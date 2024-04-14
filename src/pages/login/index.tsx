@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 import React from 'react'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Form, Input, notification } from 'antd'
+import { Button, Form, Input, notification } from 'antd'
 import { apiLogin } from '@/api/user/api'
 import type { ResRoot, LoginData } from '@/api/user/type'
 import { useUserStore } from '@/store/useUserStore'
@@ -31,7 +31,7 @@ export const Login: React.FC = () => {
       setUserInfo(user_info)
       console.log('setUserInfo', setUserInfo)
       localStorage.setItem('token', token)
-      navigator('/exammanage')
+      navigator('/classlist')
       msgSuccess('登录成功')
     } catch (error: any) {
       notification.error({
