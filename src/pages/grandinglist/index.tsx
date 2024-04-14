@@ -2,21 +2,18 @@ import { List, Radio } from 'antd'
 import { ExamCardDescription, ExamCardTitle } from './components/ExamCard'
 import styles from './index.module.scss'
 import { apiIdList } from '@/api/teacher/api'
-import { apiInfoExam } from '@/api/exam/api'
 import { useEffect, useState } from 'react'
-import { ExamInfoType } from '@/api/exam/type'
+import { teacherExamInfoType } from '@/api/teacher/type'
 
 export const GrandingList = () => {
-  const [examList, setExamList] = useState<ExamInfoType[] | undefined>(undefined)
+  const [examList, setExamList] = useState<teacherExamInfoType[] | undefined>(undefined)
 
   useEffect(() => {
     getExamInfoList()
   }, [])
   const getExamInfoList = async () => {
-    const idRes = await apiIdList()
-    const examIdList = idRes.data
-    const examList = await apiInfoExam(examIdList)
-    setExamList(examList.data)
+    const examInfoRes = await apiIdList()
+    setExamList(examInfoRes.data)
   }
   return (
     <>
@@ -47,7 +44,7 @@ export const GrandingList = () => {
           dataSource={examList}
           renderItem={(item) => (
             <List.Item
-              key={item.examID}
+              key={item.id}
               style={{
                 marginBottom: '10px',
               }}

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import styles from './index.module.scss'
 import { getexamSt } from '@/constants'
 
-export const ExamCardTitle = ({ state, name, examID }) => {
+export const ExamCardTitle = ({ state, name, id }) => {
   // * 调tag和title的间距
   const navigator = useNavigate()
   return (
@@ -12,11 +12,11 @@ export const ExamCardTitle = ({ state, name, examID }) => {
       <Tag color={'red'} className={styles['examCardTitle__tag']}>
         {getexamSt(state)}
       </Tag>
-      <Tooltip placement="top" title={`考试ID: ${examID}`} className={styles['examCardTitle__title']}>
+      <Tooltip placement="top" title={`考试ID: ${id}`} className={styles['examCardTitle__title']}>
         <h2
           onClick={(e) => {
-            console.log('Navigating to:', `/grandinglist/exammark/${examID}`)
-            navigator(`/grandinglist/exammark/${examID}`, { replace: true })
+            console.log('Navigating to:', `/grandinglist/exammark/${id}`)
+            navigator(`/grandinglist/exammark/${id}`, { replace: true })
             e.stopPropagation()
           }}
         >

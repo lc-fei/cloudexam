@@ -59,6 +59,9 @@ export const ExamManagementById = () => {
     formData.append('type', 'paper')
 
     const res = await apiUploadAnswer(formData)
+    const answerUrl = res.data
+    
+    console.log('answerUrl', answerUrl)
     msgSuccess('上传成功、请勿重复上传')
     return res.data
   }
