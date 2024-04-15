@@ -352,7 +352,7 @@ export const ExamManagementById = () => {
               <Form.Item
                 name="cutString"
                 label="试卷切片"
-                tooltip="格式案例：1/2/4/8"
+                tooltip="格式案例：1/2/1/1"
                 rules={[
                   {
                     required: true,
