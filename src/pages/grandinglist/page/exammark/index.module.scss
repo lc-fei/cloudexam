@@ -23,27 +23,36 @@
         color: #fff;
       }
     }
-    .children {
-      display: flex;
-      justify-content: center;
-      align-items: around;
-      height: auto;
-      .itemAnswer, .itemPaper {
-        height: 100px;
+    .tabs {
+      position: relative;
+      height: 700px;
+      .children {
+        display: flex;
+        justify-content: center;
+        align-items: around;
+        height: auto;
+        .itemAnswer, .itemPaper {
+          height: 100px;
+        }
+        .itemAnswer img, .itemPaper img {
+          max-width: 100%;
+          height: 90%;
+          object-fit: contain;
+        }
+        .itemPaper {
+          width: 700px;
+          height: 400px;
+        }
+        .itemAnswer {
+          width: 300px;
+          height: 400px;
+        }
       }
-      .itemAnswer img, .itemPaper img {
-        max-width: 100%;
-        height: 90%;
-      }
-      .itemPaper {
-        width: 500px;
-        height: 400px;
-      }
-      .itemAnswer {
-        width: 500px;
-        height: 400px;
+      .submitform {
+        position: absolute;
+        margin-left: 200px;
+        bottom: 20px;
       }
     }
-    
   }
 }
