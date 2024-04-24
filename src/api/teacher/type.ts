@@ -31,6 +31,7 @@ export type markInfoType = {
   PaperID: number
   Img: string
   Text: string
+  Comments: string
 }
 
 

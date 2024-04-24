@@ -25,6 +25,7 @@ export const ClassListInfo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false)
   const [thisUserId, setThisUserId] = useState<string>('-1')
+  const [isModalOpenDeleteClass, setIsModalOpenDeleteClass] = useState(false)
   const getClassInfo = async () => {
     setSpinningStore(true)
     const res = await apiInfo([parseInt(id as string)])
@@ -81,6 +82,12 @@ export const ClassListInfo = () => {
       await getClassInfo()
     }
   }
+
+  // 删除班级
+  const deleteClass = async () => {
+    msgError('开发中')
+    setIsModalOpenDeleteClass(false)
+  }
   const handleCancel = () => {
     setIsModalOpen(false)
   }
@@ -111,15 +118,28 @@ export const ClassListInfo = () => {
             <h1 style={{ display: 'inline-block', marginRight: '10px' }}>{classInfo?.Name}</h1>
             <a style={{ color: 'gray', cursor: 'text' }}>{'邀请号:' + classInfo?.Code}</a>
           </div>
-          <Button
-            type="primary"
-            danger
-            onClick={() => {
-              setIsModalOpen(true)
-            }}
-          >
-            退出班级
-          </Button>
+          {userinfo?.role !== userPms.admin && (
+            <Button
+              type="primary"
+              danger
+              onClick={() => {
+                setIsModalOpen(true)
+              }}
+            >
+              退出班级
+            </Button>
+          )}
+          {userinfo?.role === userPms.admin && (
+            <Button
+              type="primary"
+              danger
+              onClick={() => {
+                setIsModalOpenDeleteClass(true)
+              }}
+            >
+              删除班级
+            </Button>
+          )}
         </div>
         <div className={styles['content']}>
           <div>
@@ -148,16 +168,18 @@ export const ClassListInfo = () => {
                       key="action"
                       render={(_, record: UserInfoType) => (
                         <>
-                          <Button
-                            danger
-                            style={{ marginRight: '10px' }}
-                            onClick={() => {
-                              setIsModalOpenDelete(true)
-                              setThisUserId(record.uid)
-                            }}
-                          >
-                            删除成员
-                          </Button>
+                          {record.role === userPms.student && (
+                            <Button
+                              danger
+                              style={{ marginRight: '10px' }}
+                              onClick={() => {
+                                setIsModalOpenDelete(true)
+                                setThisUserId(record.uid)
+                              }}
+                            >
+                              删除成员
+                            </Button>
+                          )}
                         </>
                       )}
                     ></Column>
@@ -182,6 +204,21 @@ export const ClassListInfo = () => {
       <Modal title="删除成员" open={isModalOpenDelete} onOk={deleteUser} onCancel={handleCancelDelete} okText="确认" cancelText="取消" okType="danger">
         <div style={{ height: '20px' }}></div>
         <div>确定删除该成员？</div>
+        <div style={{ height: '20px' }}></div>
+      </Modal>
+      <Modal
+        title="删除成员"
+        open={isModalOpenDeleteClass}
+        onOk={deleteClass}
+        onCancel={() => {
+          setIsModalOpenDeleteClass(false)
+        }}
+        okText="确认"
+        cancelText="取消"
+        okType="danger"
+      >
+        <div style={{ height: '20px' }}></div>
+        <div>确定删除该班级？</div>
         <div style={{ height: '20px' }}></div>
       </Modal>
     </>
