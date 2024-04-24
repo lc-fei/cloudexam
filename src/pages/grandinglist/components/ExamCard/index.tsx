@@ -1,5 +1,4 @@
 import { Tag, Tooltip } from 'antd'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './index.module.scss'
 import { getexamSt } from '@/constants'

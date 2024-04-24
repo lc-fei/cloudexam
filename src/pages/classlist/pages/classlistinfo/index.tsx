@@ -126,7 +126,7 @@ export const ClassListInfo = () => {
             <h2>人员：</h2>
             {
               <div>
-                <Table dataSource={userInfoState || []}>
+              <Table dataSource={userInfoState || []}>
                   <Column title="uid" dataIndex="uid" key="uid" />
                   <Column title="姓名" dataIndex="name" key="name" />
                   <Column title="邮箱" dataIndex="email" key="email" />

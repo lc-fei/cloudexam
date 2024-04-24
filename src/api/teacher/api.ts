@@ -1,6 +1,5 @@
 import request from "@/utils/request";
 import { answerInfoType, resMission, resPart, resRoot, teacherExamInfoType } from "./type";
-import exp from "constants";
 
 const urlHeader = '/api/seisei'
 

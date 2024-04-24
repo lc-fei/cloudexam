@@ -67,6 +67,7 @@ export const ExamMark = () => {
           defaultActiveKey="1"
           tabPosition={'left'}
           style={{ height: 500 }}
+          // @ts-expect-error: This line causes a type error because...
           items={markInfoList?.map((item) => {
             const answerUrlList = ansWerInfoList?.map((item) => item.img)
             if (!item || !answerUrlList) {

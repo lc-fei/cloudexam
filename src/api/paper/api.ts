@@ -1,7 +1,5 @@
-import { apiNew } from './../exam/api';
 import request from "@/utils/request"
 import { reqNewList, resRoot } from "./type"
-import exp from "constants"
 
 const urlHeader = '/api/paper'
 

@@ -57,10 +57,12 @@ const request = <T>(url: string, params: unknown, clearFn?: Fn): Promise<FcRespo
         // console.log('请求出错err', err)
         // resolve(err)
         // 二、统一处理
+        console.log('err', err)
+        return
         console.log('请求出错err', err)
         let message = '请求出错'
-        if (err.data.message) message = err.data.message
-        else if (err.data) message = err.data
+        if (err.data) message = err.data
+        else if (err.data.message) message = err.data.message
         console.log('message', message)
         msgError(message)
       })

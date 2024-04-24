@@ -17,7 +17,6 @@ export const ClassList = () => {
   const [isModalOpenAdd, setIsModalOpenAdd] = useState(false)
   const [form] = Form.useForm()
   const [formAdd] = Form.useForm()
-  const [classIdList, setClassIdList] = useState<allRes>([])
   const [classInfoList, setClassInfoList] = useState<TeacherStudentData[]>()
   const navagate = useNavigate()
   const { setSpinningStore } = useSpinningStore()
@@ -100,7 +99,6 @@ export const ClassList = () => {
       classIdRes = (await apiC()) as ResRoot<cRes>
     }
     if (classIdRes.data === null) {
-      setClassIdList([])
       setClassInfoList([])
       setSpinningStore(false)
       return
@@ -108,7 +106,6 @@ export const ClassList = () => {
     const classIdList = classIdRes.data
     const classInfoRes = (await apiInfo(classIdList)) as ResRoot<infoRes>
     const classInfoObj = classInfoRes.data
-    setClassIdList(classIdList)
     setClassInfoList(Object.values(classInfoObj))
     console.log('classInfoList', classInfoList)
     console.log('更新最新的班级数据')
