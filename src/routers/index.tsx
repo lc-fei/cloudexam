@@ -11,14 +11,6 @@ import { ExamMark } from '@/pages/grandinglist/page/exammark'
 
 export const routes = [
   {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
-  },
-  {
     path: '/',
     element: <HomePage />,
     children: [
@@ -48,6 +40,15 @@ export const routes = [
       },
     ],
   },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+
   {
     path: '/stulogin',
     element: <div>STULogin Page</div>,

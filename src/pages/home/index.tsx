@@ -30,14 +30,15 @@ export const HomePage = () => {
   }
   useEffect(() => {
     // * 挂载时添加默认路由
-    setMenu(getMenu() as MenuItemType[])
     if (!localStorage.getItem('token')) {
       navigator('/login')
       msgError('请先登录')
-    }
-    pushrouter({ title: '首页', path: '/' })
-    return () => {
-      clearrouters()
+    } else {
+      setMenu(getMenu() as MenuItemType[])
+      pushrouter({ title: '首页', path: '/' })
+      return () => {
+        clearrouters()
+      }
     }
   }, [])
 
