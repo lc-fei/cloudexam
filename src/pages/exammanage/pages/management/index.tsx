@@ -12,6 +12,7 @@ import { reqNewList } from '@/api/paper/type'
 import { apiInfo } from '@/api/class/api'
 import { apiNew, apiNewAnswer } from '@/api/paper/api'
 import Meta from 'antd/es/card/Meta'
+import { checkAdmin } from '@/utils/routerGard'
 export const ExamManagementById = () => {
   const { id } = useParams()
   const [examInfo, setExamInfo] = useState<ExamInfoType | null>(null)
@@ -20,9 +21,11 @@ export const ExamManagementById = () => {
   const navagate = useNavigate()
   const [AddPaper] = Form.useForm()
   const [isModalOpenAdd, setIsModalOpenAdd] = useState(false)
+  const navigate = useNavigate()
   useEffect(() => {
     // *无依赖，挂载/卸载时触发
     // *请求数据，渲染页面
+    checkAdmin(navigate)
     getExamInfo()
   }, [])
   // 获取考试信息

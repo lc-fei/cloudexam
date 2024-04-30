@@ -7,6 +7,7 @@ import type { ResRoot, LoginData } from '@/api/user/type'
 import { useUserStore } from '@/store/useUserStore'
 import { useNavigate } from 'react-router-dom'
 import { msgSuccess } from '@/utils/msg'
+
 export const Login: React.FC = () => {
   const { setUserInfo } = useUserStore()
   const navigator = useNavigate()
@@ -20,6 +21,7 @@ export const Login: React.FC = () => {
     try {
       const req = new FormData()
       req.append('userName', values.userName)
+      // req.append('passWord', md5(values.passWord))
       req.append('passWord', values.passWord)
       // for (const [a, b] of req.entries()) {
       //   console.log(a, b)

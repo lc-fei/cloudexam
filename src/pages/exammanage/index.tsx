@@ -9,7 +9,10 @@ import { ExamInfoType, reqNew, resAll, resInfo, resRoot } from '@/api/exam/type'
 import { apiAll, apiInfoExam, apiNew } from '@/api/exam/api'
 import { useSpinningStore } from '@/store/useSpinningStore'
 import { msgSuccess } from '@/utils/msg'
+import { checkAdmin } from '@/utils/routerGard'
+import { useNavigate } from 'react-router-dom'
 export const ExamManage = () => {
+  const navigate = useNavigate()
   const [examInfoList, setExamInfoList] = useState<ExamInfoType[] | undefined>(undefined)
   const { userinfo } = useUserStore()
   const { setSpinningStore } = useSpinningStore()
@@ -54,6 +57,7 @@ export const ExamManage = () => {
   }
 
   useEffect(() => {
+    checkAdmin(navigate)
     updateExamInfoList()
   }, [])
   return (

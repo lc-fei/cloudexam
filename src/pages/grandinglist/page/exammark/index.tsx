@@ -1,11 +1,12 @@
-import {  apiFinish, apiMark} from '@/api/teacher/api'
+import { apiFinish, apiMark } from '@/api/teacher/api'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSpinningStore } from '@/store/useSpinningStore'
-import { answerInfoType, markInfoType} from '@/api/teacher/type'
+import { answerInfoType, markInfoType } from '@/api/teacher/type'
 import styles from './index.module.scss'
 import { Button, Form, Input, Modal, Tabs } from 'antd'
 import { msgError, msgSuccess } from '@/utils/msg'
+import { checkTeacher } from '@/utils/routerGard'
 export const ExamMark = () => {
   const { setSpinningStore } = useSpinningStore()
   const [markInfoList, setMarkInfoList] = useState<markInfoType[] | undefined>([])
@@ -13,6 +14,7 @@ export const ExamMark = () => {
   const { id } = useParams()
   const idInt = parseInt(id as string)
   const [form] = Form.useForm()
+  const navigate = useNavigate()
 
   // const getMarkInfo = async () => {
   //   setSpinningStore(true)
@@ -118,6 +120,7 @@ export const ExamMark = () => {
     setSpinningStore(false)
   }
   useEffect(() => {
+    checkTeacher(navigate)
     getMarkInfo()
   }, [])
 

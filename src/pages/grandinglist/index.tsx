@@ -4,11 +4,14 @@ import styles from './index.module.scss'
 import { apiIdList } from '@/api/teacher/api'
 import { useEffect, useState } from 'react'
 import { teacherExamInfoType } from '@/api/teacher/type'
+import { checkTeacher } from '@/utils/routerGard'
+import { useNavigate } from 'react-router-dom'
 
 export const GrandingList = () => {
   const [examList, setExamList] = useState<teacherExamInfoType[] | undefined>(undefined)
-
+  const navigate = useNavigate()
   useEffect(() => {
+    checkTeacher(navigate)
     getExamInfoList()
   }, [])
   const getExamInfoList = async () => {

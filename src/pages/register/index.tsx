@@ -5,7 +5,6 @@ import { Button, Form, Input, Row, Col, Select } from 'antd'
 import { ReqNew } from '@/api/user/type'
 import { apiCheck, apiNew, apiVerify } from '@/api/user/api'
 import { msgError, msgSuccess } from '@/utils/msg'
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },

@@ -26,6 +26,7 @@ export const ClassListInfo = () => {
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false)
   const [thisUserId, setThisUserId] = useState<string>('-1')
   const [isModalOpenDeleteClass, setIsModalOpenDeleteClass] = useState(false)
+  const navagate = useNavigate()
   const getClassInfo = async () => {
     setSpinningStore(true)
     const res = await apiInfo([parseInt(id as string)])
@@ -95,6 +96,12 @@ export const ClassListInfo = () => {
     setIsModalOpenDelete(false)
   }
   useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      msgError('请先登录')
+      navagate('/login')
+      return
+    }
     if (!id) {
       navigate('/classlist')
       msgError('出错，请重试')
@@ -146,7 +153,7 @@ export const ClassListInfo = () => {
             <h2>人员：</h2>
             {
               <div>
-              <Table dataSource={userInfoState || []}>
+                <Table dataSource={userInfoState || []}>
                   <Column title="uid" dataIndex="uid" key="uid" />
                   <Column title="姓名" dataIndex="name" key="name" />
                   <Column title="邮箱" dataIndex="email" key="email" />
