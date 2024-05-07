@@ -82,7 +82,7 @@ export const HomePage = () => {
           <div className={styles['bread']}>
             <Breadcrumb
               items={BreadcrumbItems}
-              itemRender={(route, _params, routes, _paths) => {
+              itemRender={(route, _params, routes) => {
                 console.table(BreadcrumbItems)
                 if (route.path === routes[0].path) {
                   return (

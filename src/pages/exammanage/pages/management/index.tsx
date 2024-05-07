@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useNavigate, useParams } from 'react-router-dom'
 import { apiDelete, apiInfoExam, apiJoin, apiPlan, apiQuit } from '@/api/exam/api'
 import { ExamInfoType } from '@/api/exam/type'
-import { Button, Card, Form, Input, Modal, Space, Upload } from 'antd'
+import { Button, Card, Form, Input, Modal, Space, Table, TableColumnsType, Upload } from 'antd'
 import { msgError, msgSuccess } from '@/utils/msg'
 import { useSpinningStore } from '@/store/useSpinningStore'
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
@@ -32,7 +32,9 @@ export const ExamManagementById = () => {
   const getExamInfo = async () => {
     setSpinningStore(true)
     const res = await apiInfoExam([parseInt(id as string)])
+    console.log(res, '获取考试信息res')
     if (res.data) setExamInfo(res.data[0])
+    console.log(res.data[0].classIDs, 'hhhhhhhhhhh')
     getClassList(res.data[0].classIDs)
     console.log('resdasdsas', res.data[0].classIDs)
     setSpinningStore(false)
@@ -177,6 +179,62 @@ export const ExamManagementById = () => {
       setSpinningStore(false)
     }
   }
+
+  // 以下是表格组件
+  interface DataType {
+    key: React.Key
+    name: string
+    age: number
+    address: string
+  }
+
+  const columns: TableColumnsType<DataType> = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Age',
+      dataIndex: 'age',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+    },
+  ]
+
+  const data: DataType[] = []
+  for (let i = 0; i < 46; i++) {
+    data.push({
+      key: i,
+      name: `Edward King ${i}`,
+      age: 32,
+      address: `London, Park Lane no. ${i}`,
+    })
+  }
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const start = () => {
+    setLoading(true)
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([])
+      setLoading(false)
+    }, 1000)
+  }
+
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys)
+    setSelectedRowKeys(newSelectedRowKeys)
+  }
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  }
+  const hasSelected = selectedRowKeys.length > 0
   return (
     <>
       <div className={styles['management']}>
@@ -210,77 +268,18 @@ export const ExamManagementById = () => {
           </div>
           <div className={styles['mother']}>
             <div>
-              <h3>学生试卷上传:</h3>
-              <div>
-                <Form
-                  form={AddPaper}
-                  name="AddPaper"
-                  onFinish={onFinish}
-                  style={{
-                    maxWidth: 400,
-                  }}
-                  autoComplete="off"
-                >
-                  <Form.List name="paper">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{
-                              display: 'flex',
-                              marginBottom: 8,
-                            }}
-                            align="baseline"
-                          >
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'data']}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: '该试卷题目不能为空!',
-                                },
-                              ]}
-                            >
-                              <Upload
-                                action={''}
-                                beforeUpload={beforeUpload} // 上传前的文件校验
-                                maxCount={1} // 一次只能上传一个文件
-                                showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }} // 自定义上传列表显示
-                              >
-                                <Button icon={<UploadOutlined />}>点击上传试卷题目</Button>
-                              </Upload>
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'maxMark']}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: '该题分值不能为空!',
-                                },
-                              ]}
-                            >
-                              <Input placeholder="题目分值" />
-                            </Form.Item>
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-
-                        <Form.Item>
-                          <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                            Add field
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                  <Form.Item name={'ownerID'} label="学生ID" rules={[{ required: true, message: '学生ID不能为空! ' }]}>
-                    <Input />
-                  </Form.Item>
+              <h3>学生试卷列表：</h3>
+              <div style={{ width: '1000px' }}>
+                <div style={{ marginBottom: 16 }}>
+                  <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
+                    Reload
+                  </Button>
+                  <span style={{ marginLeft: 8 }}>{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}</span>
+                </div>
+                <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+                <Form>
                   <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
                       上传试卷
                     </Button>
                   </Form.Item>
